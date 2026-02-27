@@ -90,8 +90,8 @@ int main(int argc, char *argv[]) {
     gtk_layer_set_margin(GTK_WINDOW(osd->window), GTK_LAYER_SHELL_EDGE_BOTTOM, 80);
     gtk_layer_set_keyboard_interactivity(GTK_WINDOW(osd->window), FALSE);
 
-    GtkWidget *box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 20);
-    gtk_container_set_border_width(GTK_CONTAINER(box), 25);
+    GtkWidget *box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 15);
+    gtk_container_set_border_width(GTK_CONTAINER(box), 20);
     gtk_container_add(GTK_CONTAINER(osd->window), box);
 
     osd->icon_label = gtk_label_new(NULL);
@@ -106,8 +106,8 @@ int main(int argc, char *argv[]) {
     GtkCssProvider *provider = gtk_css_provider_new();
     gtk_css_provider_load_from_data(provider,
         "window { background-color: rgba(24, 24, 37, 0.95); border-radius: 20px; border: 2px solid #cba6f7; box-shadow: 0 4px 15px rgba(0,0,0,0.5); } "
-        "progressbar trough { background-image: repeating-linear-gradient(to right, rgba(69, 71, 90, 0.3) 0, rgba(69, 71, 90, 0.3) 12px, transparent 12px, transparent 16px); background-color: transparent; border-radius: 4px; border: none; min-height: 24px; } "
-        "progressbar progress { background-image: repeating-linear-gradient(to right, #cba6f7 0, #cba6f7 12px, transparent 12px, transparent 16px); background-color: transparent; border-radius: 4px; border: none; min-height: 24px; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); } ", -1, NULL);
+        "trough { background-image: linear-gradient(to right, rgba(69, 71, 90, 0.3) 12px, transparent 12px); background-size: 16px 100%; background-color: transparent; border-radius: 4px; min-height: 24px; } "
+        "progress { background-image: linear-gradient(to right, #cba6f7 12px, transparent 12px); background-size: 16px 100%; background-color: transparent; border-radius: 4px; min-height: 24px; transition: all 0.1s ease-out; } ", -1, NULL);
     gtk_style_context_add_provider_for_screen(gdk_screen_get_default(), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
     g_io_add_watch(channel, G_IO_IN, on_fifo_data, osd);
