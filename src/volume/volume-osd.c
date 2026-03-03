@@ -28,19 +28,11 @@ static gboolean hide_osd(gpointer data) {
 }
 
 static void update_osd(OSDData *osd, int volume) {
-    // Detect mute status
-    gboolean is_muted = FALSE;
-    FILE *fp = popen("pamixer --get-mute", "r");
-    if (fp) {
-        char buffer[16];
-        if (fgets(buffer, sizeof(buffer), fp)) {
-            if (strstr(buffer, "true")) is_muted = TRUE;
-        }
-        pclose(fp);
-    }
-
+    // Simplified: We'll assume not muted for the refresh logic 
+    // or we can just use the volume level (0 often means muted icon)
+    
     const char *icon;
-    if (is_muted) icon = ICON_MUTE;
+    if (volume == 0) icon = ICON_MUTE;
     else if (volume < 33) icon = ICON_LOW;
     else if (volume < 66) icon = ICON_MID;
     else icon = ICON_HIGH;
@@ -48,7 +40,7 @@ static void update_osd(OSDData *osd, int volume) {
     // Update UI
     char icon_markup[128];
     snprintf(icon_markup, sizeof(icon_markup), "<span font='28' color='%s'>%s</span>", 
-             is_muted ? "#f38ba8" : "#cba6f7", icon);
+             volume == 0 ? "#f38ba8" : "#cba6f7", icon);
     gtk_label_set_markup(GTK_LABEL(osd->icon_label), icon_markup);
     gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(osd->progress), (double)volume / 100.0);
 
@@ -63,16 +55,24 @@ static gboolean on_fifo_data(GIOChannel *source, GIOCondition condition, gpointe
     gchar *str = NULL;
     gsize len;
     GIOStatus status;
+    int last_val = -1;
 
-    status = g_io_channel_read_line(source, &str, &len, NULL, NULL);
-    
-    if (status == G_IO_STATUS_NORMAL) {
+    // Read ALL available lines to get the most recent value
+    while ((status = g_io_channel_read_line(source, &str, &len, NULL, NULL)) == G_IO_STATUS_NORMAL) {
         if (str) {
-            int volume = atoi(str);
-            update_osd(osd, volume);
+            last_val = atoi(str);
             g_free(str);
         }
     }
+    
+    if (last_val != -1) {
+        update_osd(osd, last_val);
+    }
+
+    if (status == G_IO_STATUS_EOF || status == G_IO_STATUS_ERROR) {
+        return FALSE;
+    }
+    
     return TRUE;
 }
 

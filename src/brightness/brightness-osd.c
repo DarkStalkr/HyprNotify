@@ -43,17 +43,22 @@ static gboolean on_fifo_data(GIOChannel *source, GIOCondition condition, gpointe
     gchar *str = NULL;
     gsize len;
     GIOStatus status;
+    int last_val = -1;
 
-    status = g_io_channel_read_line(source, &str, &len, NULL, NULL);
-    
-    if (status == G_IO_STATUS_NORMAL) {
+    // Read ALL available lines to get the most recent value
+    while ((status = g_io_channel_read_line(source, &str, &len, NULL, NULL)) == G_IO_STATUS_NORMAL) {
         if (str) {
-            int val = atoi(str);
-            update_osd(osd, val);
+            last_val = atoi(str);
             g_free(str);
         }
-    } else if (status == G_IO_STATUS_EOF) {
-        // Re-sync or handle EOF if O_RDWR trick didn't work, but with O_RDWR it shouldn't hit this often
+    }
+    
+    if (last_val != -1) {
+        update_osd(osd, last_val);
+    }
+
+    if (status == G_IO_STATUS_EOF || status == G_IO_STATUS_ERROR) {
+        return FALSE;
     }
     
     return TRUE;
