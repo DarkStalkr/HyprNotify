@@ -7,7 +7,7 @@
 #include <unistd.h>
 #include <sys/stat.h>
 
-#define FIFO_PATH "/tmp/volume_bar_classic.fifo"
+#define FIFO_PATH "/tmp/volume_bar.fifo"
 #define ICON_MUTE "󰝟"
 #define ICON_LOW  "󰕿"
 #define ICON_MID  "󰖀"
@@ -28,25 +28,15 @@ static gboolean hide_osd(gpointer data) {
 }
 
 static void update_osd(OSDData *osd, int volume) {
-    gboolean is_muted = FALSE;
-    FILE *fp = popen("pamixer --get-mute", "r");
-    if (fp) {
-        char buffer[16];
-        if (fgets(buffer, sizeof(buffer), fp)) {
-            if (strstr(buffer, "true")) is_muted = TRUE;
-        }
-        pclose(fp);
-    }
-
     const char *icon;
-    if (is_muted) icon = ICON_MUTE;
+    if (volume == 0) icon = ICON_MUTE;
     else if (volume < 33) icon = ICON_LOW;
     else if (volume < 66) icon = ICON_MID;
     else icon = ICON_HIGH;
 
     char icon_markup[128];
     snprintf(icon_markup, sizeof(icon_markup), "<span font='28' color='%s'>%s</span>", 
-             is_muted ? "#f38ba8" : "#cba6f7", icon);
+             volume == 0 ? "#f38ba8" : "#cba6f7", icon);
     gtk_label_set_markup(GTK_LABEL(osd->icon_label), icon_markup);
     gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(osd->progress), (double)volume / 100.0);
 
@@ -59,19 +49,36 @@ static gboolean on_fifo_data(GIOChannel *source, GIOCondition condition, gpointe
     OSDData *osd = (OSDData *)data;
     gchar *str = NULL;
     gsize len;
-    if (g_io_channel_read_line(source, &str, &len, NULL, NULL) == G_IO_STATUS_NORMAL) {
-        int volume = atoi(str);
-        update_osd(osd, volume);
-        g_free(str);
+    GIOStatus status;
+    int last_val = -1;
+
+    while ((status = g_io_channel_read_line(source, &str, &len, NULL, NULL)) == G_IO_STATUS_NORMAL) {
+        if (str) {
+            last_val = atoi(str);
+            g_free(str);
+        }
     }
+
+    if (last_val != -1) {
+        update_osd(osd, last_val);
+    }
+
+    if (status == G_IO_STATUS_EOF || status == G_IO_STATUS_ERROR) {
+        return FALSE;
+    }
+    
     return TRUE;
 }
 
 int main(int argc, char *argv[]) {
     gtk_init(&argc, &argv);
-    mkfifo(FIFO_PATH, 0666);
-    int fd = open(FIFO_PATH, O_RDONLY | O_NONBLOCK);
+    if (mkfifo(FIFO_PATH, 0666) == -1) {}
+    
+    int fd = open(FIFO_PATH, O_RDWR | O_NONBLOCK);
+    if (fd == -1) return 1;
+
     GIOChannel *channel = g_io_channel_unix_new(fd);
+    g_io_channel_set_flags(channel, G_IO_FLAG_NONBLOCK, NULL);
     
     OSDData *osd = g_new0(OSDData, 1);
     osd->window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -81,6 +88,7 @@ int main(int argc, char *argv[]) {
     gtk_layer_set_namespace(GTK_WINDOW(osd->window), "volume-osd-classic");
     gtk_layer_set_anchor(GTK_WINDOW(osd->window), GTK_LAYER_SHELL_EDGE_BOTTOM, TRUE);
     gtk_layer_set_margin(GTK_WINDOW(osd->window), GTK_LAYER_SHELL_EDGE_BOTTOM, 80);
+    gtk_layer_set_keyboard_interactivity(GTK_WINDOW(osd->window), FALSE);
 
     GtkWidget *box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 15);
     gtk_container_set_border_width(GTK_CONTAINER(box), 20);
