@@ -1,30 +1,34 @@
 #!/bin/bash
-# OSD Styling Visualizer (Robust Paths)
+# OSD Styling Visualizer (Themed)
 
-# Detect project root
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 BIN_DIR="$ROOT_DIR/bin"
 FIFO_VOL="/tmp/volume_bar.fifo"
 FIFO_BRI="/tmp/brightness_bar.fifo"
 
-echo -e "\e[1;36m--- OSD Styling Visualizer ---\e[0m"
+echo -e "\e[1;36m--- OSD Styling Visualizer (Themed) ---\e[0m"
 mkdir -p "$BIN_DIR"
 
 echo "Select style to test:"
 echo "1) macOS (Default)"
-echo "2) Classic"
-echo "3) Brightness"
-read -p "Selection (1-3): " choice
+echo "2) Classic (Mocha)"
+echo "3) Dracula"
+echo "4) Macchiato"
+echo "5) Latte"
+echo "6) Brightness"
+read -p "Selection (1-6): " choice
 
 case $choice in
     1) SRC_PATH="src/volume/volume-osd.c"; BIN_NAME="volume-osd"; FIFO="$FIFO_VOL";;
     2) SRC_PATH="src/volume/volume-osd-classic.c"; BIN_NAME="volume-osd-classic"; FIFO="$FIFO_VOL";;
-    3) SRC_PATH="src/brightness/brightness-osd.c"; BIN_NAME="brightness-osd"; FIFO="$FIFO_BRI";;
+    3) SRC_PATH="src/volume/volume-osd-dracula.c"; BIN_NAME="volume-osd-dracula"; FIFO="$FIFO_VOL";;
+    4) SRC_PATH="src/volume/volume-osd-macchiato.c"; BIN_NAME="volume-osd-macchiato"; FIFO="$FIFO_VOL";;
+    5) SRC_PATH="src/volume/volume-osd-latte.c"; BIN_NAME="volume-osd-latte"; FIFO="$FIFO_VOL";;
+    6) SRC_PATH="src/brightness/brightness-osd.c"; BIN_NAME="brightness-osd"; FIFO="$FIFO_BRI";;
     *) echo "Invalid choice"; exit 1;;
 esac
 
-# 2. Re-compile (using absolute paths)
 echo -e "\e[33m[1/3] Compiling $SRC_PATH...\e[0m"
 gcc "$ROOT_DIR/$SRC_PATH" -o "$BIN_DIR/$BIN_NAME" $(pkg-config --cflags --libs gtk+-3.0 gtk-layer-shell-0)
 
@@ -33,7 +37,6 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# 3. Restart daemon
 echo -e "\e[33m[2/3] Restarting $BIN_NAME...\e[0m"
 pkill -f "$BIN_NAME"
 sleep 0.5
@@ -41,7 +44,6 @@ sleep 0.5
 DAEMON_PID=$!
 sleep 1
 
-# 4. Trigger visualization
 echo -e "\e[33m[3/3] Sending test values...\e[0m"
 for val in 15 45 75 100 0; do
     echo "  -> Sending $val% to $FIFO"

@@ -36,7 +36,7 @@ static void update_osd(OSDData *osd, int volume) {
 
     char icon_markup[128];
     snprintf(icon_markup, sizeof(icon_markup), "<span font='28' color='%s'>%s</span>", 
-             volume == 0 ? "#f38ba8" : "#cba6f7", icon);
+             volume == 0 ? "#ff5555" : "#bd93f9", icon);
     gtk_label_set_markup(GTK_LABEL(osd->icon_label), icon_markup);
     gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(osd->progress), (double)volume / 100.0);
 
@@ -105,9 +105,9 @@ int main(int argc, char *argv[]) {
 
     GtkCssProvider *provider = gtk_css_provider_new();
     gtk_css_provider_load_from_data(provider,
-        "window { background-color: #1e1e2e; border-radius: 24px; border: 2px solid #cba6f7; } "
-        "trough { background-color: #313244; border-radius: 16px; min-height: 32px; } "
-        "progress { background-color: #cba6f7; border-radius: 16px; min-height: 32px; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); } ", -1, NULL);
+        "window { background-color: #282a36; border-radius: 24px; border: 2px solid #bd93f9; } "
+        "trough { background-color: #44475a; border-radius: 16px; min-height: 32px; } "
+        "progress { background-color: #bd93f9; border-radius: 16px; min-height: 32px; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); } ", -1, NULL);
     gtk_style_context_add_provider_for_screen(gdk_screen_get_default(), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
     g_io_add_watch(channel, G_IO_IN, on_fifo_data, osd);
