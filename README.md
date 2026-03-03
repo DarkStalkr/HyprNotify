@@ -9,7 +9,7 @@ A collection of high-performance, minimalist C utilities for Hyprland/Wayland, d
 
 ---
 
-## 🚀 Features
+## Features
 - **Zero-Latency**: Daemons use persistent FIFOs to eliminate the overhead of spawning new processes on every keypress.
 - **Low Resource Usage**: Idle at 0% CPU; optimized read loops ensure smooth performance even under extreme input stress.
 - **Pure C + GTK3**: Built with `gtk-layer-shell` for native Wayland overlays (it stays above full-screen apps!).
@@ -50,7 +50,7 @@ progress { background-color: #fabd2f; min-height: 32px; }
 
 ---
 
-## 🛠️ Installation
+## Installation
 
 ```bash
 # Clone and compile
@@ -61,7 +61,7 @@ cd HyprNotify
 gcc src/volume/volume-osd.c -o bin/volume-osd $(pkg-config --cflags --libs gtk+-3.0 gtk-layer-shell-0)
 ```
 
-## ⌨️ Keybindings (Hyprland)
+## Keybindings (Hyprland)
 ```bash
 # Volume control with FIFO feedback
 binde = , XF86AudioRaiseVolume, exec, pamixer -ui 3 && pamixer --get-volume > /tmp/volume_bar.fifo
@@ -70,7 +70,7 @@ binde = , XF86AudioLowerVolume, exec, pamixer -ud 3 && pamixer --get-volume > /t
 
 ---
 
-## 📊 Performance Benchmark
+## Performance Benchmark
 | Utility | Idle CPU | Active CPU (Stress) | RAM Usage |
 | :--- | :--- | :--- | :--- |
 | **Volume OSD** | 0.0% | 4-5% | ~40MB |
