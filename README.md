@@ -1,56 +1,71 @@
-# Volume OSD for Hyprland
+# HyprNotify Suite
 
-A modern, high-performance volume notification bar (OSD) written in C, specifically designed for Wayland compositors using GTK3 and Layer-Shell. It features a crisp, segmented "cube" design inspired by macOS, smooth transitions, and dynamic Nerd Font icons.
+A collection of high-performance, minimalist C utilities for Hyprland/Wayland, designed for seamless system feedback and power management.
 
-## Features
-- **macOS-Style Segmented Bar**: Crisp 12px blocks with 4px gaps for clear visibility.
-- **Minimalist Aesthetic**: Floating overlay anchored to the bottom center of the screen.
-- **Real-time Feedback**: Updates instantly via a named pipe (FIFO) at `/tmp/volume_bar.fifo`.
-- **Intelligent Mute Detection**: Automatically checks system mute status via `pamixer`.
-- **Hardware Efficient**: Uses an asynchronous event loop; only visible when needed.
+## Project Structure
+- `src/volume/`: Source files for volume OSD variants (Classic, macOS style).
+- `src/brightness/`: Source for the brightness OSD.
+- `src/power/`: Hardware-agnostic Power-Mod utility for refresh rate toggling.
+- `scripts/`: Testing and debugging utilities for all OSDs.
+- `bin/`: Target directory for compiled binaries (ignored by Git).
+
+---
+
+## Included Utilities
+
+### 1. Volume & Brightness OSDs
+Modern notification bars that provide instant visual feedback via GTK3 and Layer-Shell.
+- **Segmented Design**: macOS-inspired "cube" style bar with dynamic coloring.
+- **Asynchronous Updates**: Uses named pipes (FIFOs) for zero-latency feedback without spawning new processes.
+- **Intelligent Feedback**: Volume OSD automatically detects mute status via `pamixer`.
+
+### 2. Power-Mod Utility
+A tool to toggle between performance and battery-saving modes based on monitor hardware.
+- **Auto-Detection**: Dynamically identifies the focused monitor, resolution, and maximum refresh rate.
+- **Seamless Toggling**: Switches refresh rates (e.g., 165Hz to 60Hz) with a built-in visual OSD.
+- **Single Binary**: Logic and UI combined into one unified tool.
+
+---
 
 ## Prerequisites
 - **Toolkit**: `gtk3`, `gtk-layer-shell`
-- **Audio Utility**: `pamixer` (required for volume and mute status detection).
-- **Fonts**: A NerdFont (e.g., JetBrainsMono Nerd Font) to render icons correctly.
+- **Utilities**: `hyprland`, `hyprctl`, `pamixer` (volume), `brightnessctl` (brightness).
+- **Fonts**: A NerdFont (e.g., JetBrainsMono Nerd Font) for icons.
 
 ## Installation & Compilation
 
-1. **Compile the binary**:
-   ```bash
-   gcc volume-osd.c -o volume-osd $(pkg-config --cflags --libs gtk+-3.0 gtk-layer-shell-0)
-   ```
-2. **Move to your PATH**:
-   ```bash
-   mkdir -p ~/.local/bin
-   cp volume-osd ~/.local/bin/
-   ```
-
-## Usage
-
-### 1. Autostart
-Add this to your `hyprland.conf` or `autostart.conf`:
+Compile the utilities into the `bin/` directory:
 ```bash
-exec-once = ~/.local/bin/volume-osd
+# Volume OSD
+gcc src/volume/volume-osd.c -o bin/volume-osd $(pkg-config --cflags --libs gtk+-3.0 gtk-layer-shell-0)
+
+# Brightness OSD
+gcc src/brightness/brightness-osd.c -o bin/brightness-osd $(pkg-config --cflags --libs gtk+-3.0 gtk-layer-shell-0)
+
+# Power Mod
+gcc src/power/power-mod.c -o bin/power-mod $(pkg-config --cflags --libs gtk+-3.0 gtk-layer-shell-0)
 ```
 
-### 2. Keybindings
-Update your volume keys in `hyprland.conf` (using **`binde`** to enable repeat when held):
+## Setup & Keybindings
+
+### 1. Autostart
+Add the OSD daemons to your `hyprland.conf`:
 ```bash
+exec-once = ~/.local/bin/volume-osd
+exec-once = ~/.local/bin/brightness-osd
+```
+
+### 2. Keybinds
+```bash
+# Volume
 binde = , XF86AudioRaiseVolume, exec, pamixer -ui 3 && pamixer --get-volume > /tmp/volume_bar.fifo
 binde = , XF86AudioLowerVolume, exec, pamixer -ud 3 && pamixer --get-volume > /tmp/volume_bar.fifo
 bind  = , XF86AudioMute, exec, pamixer -t && pamixer --get-volume > /tmp/volume_bar.fifo
+
+# Brightness
+binde = , XF86MonBrightnessUp, exec, brightnessctl s +5% && brightnessctl g | awk '{print int($1/255*100)}' > /tmp/brightness_bar.fifo
+binde = , XF86MonBrightnessDown, exec, brightnessctl s 5%- && brightnessctl g | awk '{print int($1/255*100)}' > /tmp/brightness_bar.fifo
+
+# Power Toggle
+bind = , XF86Assistant, exec, power-mod
 ```
-
-## Testing
-Use the included testing script to verify the UI without changing your system volume:
-```bash
-./test-osd.sh
-```
-
-## UI Customization
-You can personalize the OSD by editing the source code in `volume-osd.c`:
-
-- **Segment Size**: In the CSS section, change `12px` (block size) and `16px` (total block + gap) to adjust the "cube" look.
-- **Colors**: Modify `#cba6f7` (Mauve) for the accent and `#f38ba8` (Red) for the muted state.
-- **Timing**: Change the value in `g_timeout_add(1500, ...)` to adjust the display duration in milliseconds.
