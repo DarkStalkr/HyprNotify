@@ -1,13 +1,16 @@
 #!/bin/bash
-# OSD Styling Visualizer
+# OSD Styling Visualizer (Robust Paths)
 
-BIN_DIR="./bin"
+# Detect project root
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+BIN_DIR="$ROOT_DIR/bin"
 FIFO_VOL="/tmp/volume_bar.fifo"
 FIFO_BRI="/tmp/brightness_bar.fifo"
 
 echo -e "\e[1;36m--- OSD Styling Visualizer ---\e[0m"
+mkdir -p "$BIN_DIR"
 
-# 1. Ask for style to test
 echo "Select style to test:"
 echo "1) macOS (Default)"
 echo "2) Classic"
@@ -15,21 +18,26 @@ echo "3) Brightness"
 read -p "Selection (1-3): " choice
 
 case $choice in
-    1) DAEMON="$BIN_DIR/volume-osd"; FIFO="$FIFO_VOL";;
-    2) DAEMON="$BIN_DIR/volume-osd-classic"; FIFO="$FIFO_VOL";;
-    3) DAEMON="$BIN_DIR/brightness-osd"; FIFO="$FIFO_BRI";;
+    1) SRC_PATH="src/volume/volume-osd.c"; BIN_NAME="volume-osd"; FIFO="$FIFO_VOL";;
+    2) SRC_PATH="src/volume/volume-osd-classic.c"; BIN_NAME="volume-osd-classic"; FIFO="$FIFO_VOL";;
+    3) SRC_PATH="src/brightness/brightness-osd.c"; BIN_NAME="brightness-osd"; FIFO="$FIFO_BRI";;
     *) echo "Invalid choice"; exit 1;;
 esac
 
-# 2. Re-compile the specific one (verbose)
-echo -e "\e[33m[1/3] Compiling current source...\e[0m"
-gcc "src/$(basename $DAEMON | cut -d'-' -f1)/$(basename $DAEMON).c" -o "$DAEMON" $(pkg-config --cflags --libs gtk+-3.0 gtk-layer-shell-0)
+# 2. Re-compile (using absolute paths)
+echo -e "\e[33m[1/3] Compiling $SRC_PATH...\e[0m"
+gcc "$ROOT_DIR/$SRC_PATH" -o "$BIN_DIR/$BIN_NAME" $(pkg-config --cflags --libs gtk+-3.0 gtk-layer-shell-0)
+
+if [ $? -ne 0 ]; then
+    echo -e "\e[31mCompilation failed!\e[0m"
+    exit 1
+fi
 
 # 3. Restart daemon
-echo -e "\e[33m[2/3] Restarting OSD daemon...\e[0m"
-pkill -f "$(basename $DAEMON)"
+echo -e "\e[33m[2/3] Restarting $BIN_NAME...\e[0m"
+pkill -f "$BIN_NAME"
 sleep 0.5
-"$DAEMON" &
+"$BIN_DIR/$BIN_NAME" &
 DAEMON_PID=$!
 sleep 1
 

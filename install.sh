@@ -1,9 +1,11 @@
 #!/bin/bash
-# HyprNotify Suite Installer
+# HyprNotify Suite Installer (Robust Paths)
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$SCRIPT_DIR"
 DEST="$HOME/.local/bin"
 CONF="$HOME/.config/hypr/hyprland.conf"
-BIN_DIR="./bin"
+BIN_DIR="$ROOT_DIR/bin"
 
 echo -e "\e[1;34m--- HyprNotify Installer ---\e[0m"
 
@@ -19,16 +21,15 @@ mkdir -p "$BIN_DIR" "$DEST"
 
 # 2. Compile All Stylings
 echo -e "\e[33m[2/4] Compiling utilities...\e[0m"
-# Volume variants
-gcc src/volume/volume-osd.c -o "$BIN_DIR/volume-osd" $(pkg-config --cflags --libs gtk+-3.0 gtk-layer-shell-0) && echo "  - volume-osd (Default) compiled."
-gcc src/volume/volume-osd-classic.c -o "$BIN_DIR/volume-osd-classic" $(pkg-config --cflags --libs gtk+-3.0 gtk-layer-shell-0) && echo "  - volume-osd-classic compiled."
-
-# Brightness & Power
-gcc src/brightness/brightness-osd.c -o "$BIN_DIR/brightness-osd" $(pkg-config --cflags --libs gtk+-3.0 gtk-layer-shell-0) && echo "  - brightness-osd compiled."
-gcc src/power/power-mod.c -o "$BIN_DIR/power-mod" $(pkg-config --cflags --libs gtk+-3.0 gtk-layer-shell-0) && echo "  - power-mod compiled."
+gcc "$ROOT_DIR/src/volume/volume-osd.c" -o "$BIN_DIR/volume-osd" $(pkg-config --cflags --libs gtk+-3.0 gtk-layer-shell-0) && echo "  - volume-osd compiled."
+gcc "$ROOT_DIR/src/volume/volume-osd-classic.c" -o "$BIN_DIR/volume-osd-classic" $(pkg-config --cflags --libs gtk+-3.0 gtk-layer-shell-0) && echo "  - volume-osd-classic compiled."
+gcc "$ROOT_DIR/src/brightness/brightness-osd.c" -o "$BIN_DIR/brightness-osd" $(pkg-config --cflags --libs gtk+-3.0 gtk-layer-shell-0) && echo "  - brightness-osd compiled."
+gcc "$ROOT_DIR/src/power/power-mod.c" -o "$BIN_DIR/power-mod" $(pkg-config --cflags --libs gtk+-3.0 gtk-layer-shell-0) && echo "  - power-mod compiled."
 
 # 3. Installation
 echo -e "\e[33m[3/4] Installing binaries to $DEST...\e[0m"
+pkill volume-osd
+pkill brightness-osd
 cp "$BIN_DIR"/* "$DEST/"
 chmod +x "$DEST"/*-osd "$DEST/power-mod"
 
@@ -39,11 +40,8 @@ if [ -f "$CONF" ]; then
         if ! grep -q "exec-once = $daemon" "$CONF"; then
             echo "exec-once = $daemon" >> "$CONF"
             echo "  - Added 'exec-once = $daemon' to hyprland.conf"
-        else
-            echo "  - $daemon already in hyprland.conf"
         fi
     done
 fi
 
 echo -e "\e[1;32mInstallation Complete!\e[0m"
-echo "Restart Hyprland or run the daemons manually to start."
