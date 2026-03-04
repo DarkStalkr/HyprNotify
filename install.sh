@@ -49,10 +49,6 @@ case $t in
 esac
 echo -e "  \e[32m✔\e[0m Selected Theme Style: \e[1m$THEME\e[0m"
 
-echo -e "\n\e[36m[2.5/5] Optional: Power-Mod Utility\e[0m"
-read -p "  Install Power-Mod (Refresh Rate Toggler)? (y/N): " install_power
-[[ "$install_power" =~ ^[Yy]$ ]] && INSTALL_POWER=true || INSTALL_POWER=false
-
 # 3. Cleanup & Compilation
 echo -e "\n\e[33m[3/5] Step: Compilation & Binary Deployment\e[0m"
 
@@ -94,8 +90,10 @@ echo "  -> Launching new OSD daemons in background..."
 "$DEST/volume-osd" &
 "$DEST/brightness-osd" &
 
-if [ "$INSTALL_POWER" = true ]; then
-    echo -e "\n\e[33m[5/5] Final Step: Power-Mod Utility\e[0m"
+# 5. Optional Power-Mod
+echo -e "\n\e[33m[5/5] Final Step: Power-Mod Utility\e[0m"
+read -p "  Install Power-Mod (Refresh Rate Toggler)? (y/N): " install_power
+if [[ "$install_power" =~ ^[Yy]$ ]]; then
     echo "  -> Compiling Power-Mod Utility..."
     gcc "$ROOT_DIR/src/power/power-mod.c" -o "$DEST/power-mod" $(pkg-config --cflags --libs gtk+-3.0 gtk-layer-shell-0)
     if [ $? -eq 0 ]; then 
@@ -103,6 +101,8 @@ if [ "$INSTALL_POWER" = true ]; then
     else 
         echo -e "     \e[31m✘\e[0m Compilation failed for Power-Mod."
     fi
+else
+    echo "  -> Skipping Power-Mod installation."
 fi
 
 echo -e "\n\e[1;32mInstallation Successful!\e[0m"

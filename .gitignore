@@ -1,3 +1,4 @@
 volume-osd
 bin/
 hyprnotify.json
+scripts/full_demo.sh
