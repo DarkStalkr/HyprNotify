@@ -105,7 +105,7 @@ int main(int argc, char *argv[]) {
 
     GtkCssProvider *provider = gtk_css_provider_new();
     gtk_css_provider_load_from_data(provider,
-        "window { background-color: #eff1f5; border-radius: 24px; border: 2px solid #8839ef; } "
+        "window, box { background-color: #eff1f5; border-radius: 24px; border: 2px solid #8839ef; } box { border-radius: 24px; } "
         "trough { background-color: #ccd0da; border-radius: 16px; min-height: 32px; } "
         "progress { background-color: #8839ef; border-radius: 16px; min-height: 32px; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); } ", -1, NULL);
     gtk_style_context_add_provider_for_screen(gdk_screen_get_default(), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);

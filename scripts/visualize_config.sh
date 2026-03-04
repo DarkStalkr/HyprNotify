@@ -15,17 +15,23 @@ echo "1) macOS (Default)"
 echo "2) Classic (Mocha)"
 echo "3) Dracula"
 echo "4) Macchiato"
-echo "5) Latte"
-echo "6) Brightness"
-read -p "Selection (1-6): " choice
+echo "5) Frappé"
+echo "6) Latte"
+echo "7) Tokyo Night"
+echo "8) Brightness (Mocha)"
+echo "9) Brightness (Tokyo Night)"
+read -p "Selection (1-9): " choice
 
 case $choice in
     1) SRC_PATH="src/volume/volume-osd.c"; BIN_NAME="volume-osd"; FIFO="$FIFO_VOL";;
     2) SRC_PATH="src/volume/volume-osd-classic.c"; BIN_NAME="volume-osd-classic"; FIFO="$FIFO_VOL";;
     3) SRC_PATH="src/volume/volume-osd-dracula.c"; BIN_NAME="volume-osd-dracula"; FIFO="$FIFO_VOL";;
     4) SRC_PATH="src/volume/volume-osd-macchiato.c"; BIN_NAME="volume-osd-macchiato"; FIFO="$FIFO_VOL";;
-    5) SRC_PATH="src/volume/volume-osd-latte.c"; BIN_NAME="volume-osd-latte"; FIFO="$FIFO_VOL";;
-    6) SRC_PATH="src/brightness/brightness-osd.c"; BIN_NAME="brightness-osd"; FIFO="$FIFO_BRI";;
+    5) SRC_PATH="src/volume/volume-osd-frappe.c"; BIN_NAME="volume-osd-frappe"; FIFO="$FIFO_VOL";;
+    6) SRC_PATH="src/volume/volume-osd-latte.c"; BIN_NAME="volume-osd-latte"; FIFO="$FIFO_VOL";;
+    7) SRC_PATH="src/volume/volume-osd-tokyonight.c"; BIN_NAME="volume-osd-tokyonight"; FIFO="$FIFO_VOL";;
+    8) SRC_PATH="src/brightness/brightness-osd.c"; BIN_NAME="brightness-osd"; FIFO="$FIFO_BRI";;
+    9) SRC_PATH="src/brightness/brightness-osd-tokyonight.c"; BIN_NAME="brightness-osd-tokyonight"; FIFO="$FIFO_BRI";;
     *) echo "Invalid choice"; exit 1;;
 esac
 
@@ -37,8 +43,10 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-echo -e "\e[33m[2/3] Restarting $BIN_NAME...\e[0m"
-pkill -f "$BIN_NAME"
+echo -e "\e[33m[2/3] Restarting OSD (clearing all others)...\e[0m"
+pkill volume-osd
+pkill brightness-osd
+pkill -f "osd-"
 sleep 0.5
 "$BIN_DIR/$BIN_NAME" &
 DAEMON_PID=$!

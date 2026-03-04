@@ -9,9 +9,10 @@ A collection of high-performance, minimalist C utilities for Hyprland/Wayland, d
 
 ---
 
-## Features
+## 🚀 Features
 - **Zero-Latency**: Daemons use persistent FIFOs to eliminate the overhead of spawning new processes on every keypress.
-- **Low Resource Usage**: Idle at 0% CPU; optimized read loops ensure smooth performance even under extreme input stress.
+- **Ultra-Smooth Animations**: Optimized logic with 0.05s CSS transitions and throttled UI updates for a "clean" and responsive feel, even under high-frequency input (e.g., holding a key).
+- **Low Resource Usage**: Idle at 0.0% CPU; optimized read loops and redundant call avoidance ensure minimal impact during use.
 - **Pure C + GTK3**: Built with `gtk-layer-shell` for native Wayland overlays (it stays above full-screen apps!).
 - **Hardware Agnostic Power-Mod**: Automatically detects monitor specs to toggle refresh rates (65Hz/165Hz+) dynamically.
 
@@ -19,9 +20,13 @@ A collection of high-performance, minimalist C utilities for Hyprland/Wayland, d
 
 ## 🎨 Theming & Customization
 
-The HyprNotify suite is designed to be easily "riceable." You can customize the look by modifying the CSS string in the `src/*.c` files before compiling.
+The HyprNotify suite is designed to be easily "riceable." It includes pre-configured variants for:
+- **macOS (Default)**: Segmented "dotted" bar design.
+- **Catppuccin**: Mocha, Macchiato, Frappé, Latte.
+- **Dracula**: Classic dark palette with purple accents.
+- **Tokyo Night**: Deep blue and gold aesthetics.
 
-### 1. Default: Catppuccin Segmented (Mac-style)
+### 1. Style: macOS Segmented
 The current default features 12px blocks with 4px gaps for a modern, geometric look.
 ```css
 /* Mauve: #cba6f7 | Background: #181825 */
@@ -30,51 +35,50 @@ trough { background-image: linear-gradient(to right, rgba(69, 71, 90, 0.3) 12px,
 progress { background-image: linear-gradient(to right, #cba6f7 12px, transparent 12px); background-size: 16px 100%; }
 ```
 
-### 2. Solid Minimal (Nord Theme)
-A thinner, solid bar without segments for a cleaner aesthetic.
-```css
-/* Change trough/progress in the .c file */
-window { background-color: rgba(46, 52, 64, 0.9); border-radius: 8px; border: 1px solid #88c0d0; }
-trough { background-color: rgba(76, 86, 106, 0.5); min-height: 8px; border-radius: 4px; }
-progress { background-color: #88c0d0; min-height: 8px; border-radius: 4px; }
-```
-
-### 3. Chunky Gruvbox
-A thicker, bold bar with retro colors.
-```css
-/* Gruvbox Gold: #fabd2f */
-window { background-color: #282828; border-radius: 0px; border: 3px solid #fabd2f; }
-trough { background-color: #3c3836; min-height: 32px; }
-progress { background-color: #fabd2f; min-height: 32px; }
-```
-
 ---
 
-## Installation
+## 🛠️ Installation
 
+### 1. Install Prerequisites
+
+**Arch Linux:**
 ```bash
-# Clone and compile
-git clone https://github.com/DarkStalkr/HyprNotify.git
-cd HyprNotify
-
-# Compile Volume (example)
-gcc src/volume/volume-osd.c -o bin/volume-osd $(pkg-config --cflags --libs gtk+-3.0 gtk-layer-shell-0)
+sudo pacman -S gtk3 gtk-layer-shell pkg-config pamixer brightnessctl
 ```
 
-## Keybindings (Hyprland)
+**Debian / Ubuntu:**
+```bash
+sudo apt install libgtk-3-dev libgtk-layer-shell-dev pkg-config pamixer brightnessctl
+```
+
+### 2. Run Installer
+```bash
+git clone https://github.com/DarkStalkr/HyprNotify.git
+cd HyprNotify
+chmod +x install.sh
+./install.sh
+```
+
+## ⌨️ Keybindings (Hyprland)
+Add these to your `hyprland.conf`:
 ```bash
 # Volume control with FIFO feedback
 binde = , XF86AudioRaiseVolume, exec, pamixer -ui 3 && pamixer --get-volume > /tmp/volume_bar.fifo
 binde = , XF86AudioLowerVolume, exec, pamixer -ud 3 && pamixer --get-volume > /tmp/volume_bar.fifo
+bind  = , XF86AudioMute, exec, pamixer -t && pamixer --get-volume > /tmp/volume_bar.fifo
+
+# Brightness control
+binde = , XF86MonBrightnessUp, exec, brightnessctl s +5% && brightnessctl g | awk '{print int($1/255*100)}' > /tmp/brightness_bar.fifo
+binde = , XF86MonBrightnessDown, exec, brightnessctl s 5%- && brightnessctl g | awk '{print int($1/255*100)}' > /tmp/brightness_bar.fifo
 ```
 
 ---
 
-## Performance Benchmark
+## 📊 Performance Benchmark
 | Utility | Idle CPU | Active CPU (Stress) | RAM Usage |
 | :--- | :--- | :--- | :--- |
-| **Volume OSD** | 0.0% | 4-5% | ~40MB |
-| **Brightness OSD** | 0.0% | 3-4% | ~35MB |
+| **Volume OSD** | 0.0% | ~4.9% | ~39MB |
+| **Brightness OSD** | 0.0% | ~3.4% | ~35MB |
 | **Power Mod** | N/A | < 5ms exec | Negligible |
 
-*Tested on Arch Linux / Zen Kernel.*
+*Tested on Arch Linux / Zen Kernel using `scripts/robust_benchmark.sh`.*
