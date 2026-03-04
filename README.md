@@ -4,7 +4,7 @@ A collection of high-performance, minimalist C utilities for Hyprland/Wayland, d
 
 <div align="center">
   <img src="assets/classic_volume.gif" width="45%" alt="Volume OSD Demo">
-  <img src="assets/brightness_demo.gif" width="45%" alt="Brightness OSD Demo">
+  <img src="assets/classic_birghtness.gif" width="45%" alt="Brightness OSD Demo">
 </div>
 
 ---
