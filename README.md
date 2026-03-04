@@ -28,7 +28,7 @@ The HyprNotify suite is designed to be easily "riceable." Choose from several pr
 <summary><b>🍎 macOS Segmented (Default)</b></summary>
 <br>
 <div align="center">
-  <img src="assets/showcase_gifs/macos_volume.gif" width="45%" alt="macOS Volume">
+  <img src="assets/showcase_gifs/macos_volume.gif" width="45%" alt="macOS Volume">&nbsp;&nbsp;
   <img src="assets/showcase_gifs/macos_brightness.gif" width="45%" alt="macOS Brightness">
 </div>
 </details>
@@ -37,7 +37,7 @@ The HyprNotify suite is designed to be easily "riceable." Choose from several pr
 <summary><b>☕ Catppuccin Mocha (Solid Classic)</b></summary>
 <br>
 <div align="center">
-  <img src="assets/showcase_gifs/classic_volume.gif" width="45%" alt="Mocha Volume">
+  <img src="assets/showcase_gifs/classic_volume.gif" width="45%" alt="Mocha Volume">&nbsp;&nbsp;
   <img src="assets/showcase_gifs/classic_brightness.gif" width="45%" alt="Mocha Brightness">
 </div>
 </details>
@@ -46,7 +46,7 @@ The HyprNotify suite is designed to be easily "riceable." Choose from several pr
 <summary><b>🌊 Catppuccin Macchiato</b></summary>
 <br>
 <div align="center">
-  <img src="assets/showcase_gifs/macchiato_volume.gif" width="45%" alt="Macchiato Volume">
+  <img src="assets/showcase_gifs/macchiato_volume.gif" width="45%" alt="Macchiato Volume">&nbsp;&nbsp;
   <img src="assets/showcase_gifs/macchiato_brightness.gif" width="45%" alt="Macchiato Brightness">
 </div>
 </details>
@@ -55,7 +55,7 @@ The HyprNotify suite is designed to be easily "riceable." Choose from several pr
 <summary><b>🍧 Catppuccin Frappé</b></summary>
 <br>
 <div align="center">
-  <img src="assets/showcase_gifs/frappe_volume.gif" width="45%" alt="Frappé Volume">
+  <img src="assets/showcase_gifs/frappe_volume.gif" width="45%" alt="Frappé Volume">&nbsp;&nbsp;
   <img src="assets/showcase_gifs/frappe_brightness.gif" width="45%" alt="Frappé Brightness">
 </div>
 </details>
@@ -64,7 +64,7 @@ The HyprNotify suite is designed to be easily "riceable." Choose from several pr
 <summary><b>🥛 Catppuccin Latte</b></summary>
 <br>
 <div align="center">
-  <img src="assets/showcase_gifs/latte_volume.gif" width="45%" alt="Latte Volume">
+  <img src="assets/showcase_gifs/latte_volume.gif" width="45%" alt="Latte Volume">&nbsp;&nbsp;
   <img src="assets/showcase_gifs/latte_brightness.gif" width="45%" alt="Latte Brightness">
 </div>
 </details>
@@ -73,7 +73,7 @@ The HyprNotify suite is designed to be easily "riceable." Choose from several pr
 <summary><b>🧛 Dracula</b></summary>
 <br>
 <div align="center">
-  <img src="assets/showcase_gifs/dracula_volume.gif" width="45%" alt="Dracula Volume">
+  <img src="assets/showcase_gifs/dracula_volume.gif" width="45%" alt="Dracula Volume">&nbsp;&nbsp;
   <img src="assets/showcase_gifs/dracula_brightness.gif" width="45%" alt="Dracula Brightness">
 </div>
 </details>
@@ -82,7 +82,7 @@ The HyprNotify suite is designed to be easily "riceable." Choose from several pr
 <summary><b>🌃 Tokyo Night</b></summary>
 <br>
 <div align="center">
-  <img src="assets/showcase_gifs/tokyonight_volume.gif" width="45%" alt="Tokyo Night Volume">
+  <img src="assets/showcase_gifs/tokyonight_volume.gif" width="45%" alt="Tokyo Night Volume">&nbsp;&nbsp;
   <img src="assets/showcase_gifs/tokyonight_brightness.gif" width="45%" alt="Tokyo Night Brightness">
 </div>
 </details>
