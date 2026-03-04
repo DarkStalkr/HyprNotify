@@ -33,7 +33,7 @@ The HyprNotify suite is designed to be easily "riceable." Choose from several pr
 </details>
 
 <details>
-<summary><b>☕ Catppuccin Mocha (Solid Classic)</b></summary>
+<summary><b>🌿 Catppuccin Mocha (Solid Classic)</b></summary>
 <br>
 <div align="center">
   <img src="assets/showcase_gifs/classic_volume.gif" width="45%" alt="Mocha Volume">&nbsp;&nbsp;
@@ -42,7 +42,7 @@ The HyprNotify suite is designed to be easily "riceable." Choose from several pr
 </details>
 
 <details>
-<summary><b>🌊 Catppuccin Macchiato</b></summary>
+<summary><b>🌺 Catppuccin Macchiato</b></summary>
 <br>
 <div align="center">
   <img src="assets/showcase_gifs/macchiato_volume.gif" width="45%" alt="Macchiato Volume">&nbsp;&nbsp;
@@ -51,7 +51,7 @@ The HyprNotify suite is designed to be easily "riceable." Choose from several pr
 </details>
 
 <details>
-<summary><b>🍧 Catppuccin Frappé</b></summary>
+<summary><b>🪴 Catppuccin Frappé</b></summary>
 <br>
 <div align="center">
   <img src="assets/showcase_gifs/frappe_volume.gif" width="45%" alt="Frappé Volume">&nbsp;&nbsp;
@@ -60,7 +60,7 @@ The HyprNotify suite is designed to be easily "riceable." Choose from several pr
 </details>
 
 <details>
-<summary><b>🥛 Catppuccin Latte</b></summary>
+<summary><b>🌻 Catppuccin Latte</b></summary>
 <br>
 <div align="center">
   <img src="assets/showcase_gifs/latte_volume.gif" width="45%" alt="Latte Volume">&nbsp;&nbsp;
