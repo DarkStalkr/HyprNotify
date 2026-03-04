@@ -3,8 +3,8 @@
 A collection of high-performance, minimalist C utilities for Hyprland/Wayland, designed for seamless system feedback and power management.
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/DarkStalkr/HyprNotify/main/assets/volume_demo.gif" width="45%" alt="Volume OSD Demo">
-  <img src="https://raw.githubusercontent.com/DarkStalkr/HyprNotify/main/assets/brightness_demo.gif" width="45%" alt="Brightness OSD Demo">
+  <img src="assets/classic_volume.gif" width="45%" alt="Volume OSD Demo">
+  <img src="assets/brightness_demo.gif" width="45%" alt="Brightness OSD Demo">
 </div>
 
 ---
