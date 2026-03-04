@@ -22,16 +22,75 @@ A collection of high-performance, minimalist C utilities for Hyprland/Wayland, d
 
 ## 🎨 Theming & Customization
 
-The HyprNotify suite is designed to be easily "riceable." It includes pre-configured variants for:
-- **macOS (Default)**: Segmented "dotted" bar design.
-- **Catppuccin**: Mocha, Macchiato, Frappé, Latte.
-- **Dracula**: Classic dark palette with purple accents.
-- **Tokyo Night**: Deep blue and gold aesthetics.
+The HyprNotify suite is designed to be easily "riceable." Choose from several pre-configured themes or create your own with CSS.
 
-### 1. Style: macOS Segmented
-The current default features 12px blocks with 4px gaps for a modern, geometric look.
+<details>
+<summary><b>🍎 macOS Segmented (Default)</b></summary>
+<br>
+<div align="center">
+  <img src="assets/showcase_gifs/macos_volume.gif" width="45%" alt="macOS Volume">
+  <img src="assets/showcase_gifs/macos_brightness.gif" width="45%" alt="macOS Brightness">
+</div>
+</details>
+
+<details>
+<summary><b>☕ Catppuccin Mocha (Solid Classic)</b></summary>
+<br>
+<div align="center">
+  <img src="assets/showcase_gifs/classic_volume.gif" width="45%" alt="Mocha Volume">
+  <img src="assets/showcase_gifs/classic_brightness.gif" width="45%" alt="Mocha Brightness">
+</div>
+</details>
+
+<details>
+<summary><b>🌊 Catppuccin Macchiato</b></summary>
+<br>
+<div align="center">
+  <img src="assets/showcase_gifs/macchiato_volume.gif" width="45%" alt="Macchiato Volume">
+  <img src="assets/showcase_gifs/macchiato_brightness.gif" width="45%" alt="Macchiato Brightness">
+</div>
+</details>
+
+<details>
+<summary><b>🍧 Catppuccin Frappé</b></summary>
+<br>
+<div align="center">
+  <img src="assets/showcase_gifs/frappe_volume.gif" width="45%" alt="Frappé Volume">
+  <img src="assets/showcase_gifs/frappe_brightness.gif" width="45%" alt="Frappé Brightness">
+</div>
+</details>
+
+<details>
+<summary><b>🥛 Catppuccin Latte</b></summary>
+<br>
+<div align="center">
+  <img src="assets/showcase_gifs/latte_volume.gif" width="45%" alt="Latte Volume">
+  <img src="assets/showcase_gifs/latte_brightness.gif" width="45%" alt="Latte Brightness">
+</div>
+</details>
+
+<details>
+<summary><b>🧛 Dracula</b></summary>
+<br>
+<div align="center">
+  <img src="assets/showcase_gifs/dracula_volume.gif" width="45%" alt="Dracula Volume">
+  <img src="assets/showcase_gifs/dracula_brightness.gif" width="45%" alt="Dracula Brightness">
+</div>
+</details>
+
+<details>
+<summary><b>🌃 Tokyo Night</b></summary>
+<br>
+<div align="center">
+  <img src="assets/showcase_gifs/tokyonight_volume.gif" width="45%" alt="Tokyo Night Volume">
+  <img src="assets/showcase_gifs/tokyonight_brightness.gif" width="45%" alt="Tokyo Night Brightness">
+</div>
+</details>
+
+### Custom Styling
+You can modify the CSS block in any variant's `.c` file to perfectly match your setup.
 ```css
-/* Mauve: #cba6f7 | Background: #181825 */
+/* Example macOS styling */
 window { background-color: rgba(24, 24, 37, 0.95); border-radius: 20px; border: 2px solid #cba6f7; }
 trough { background-image: linear-gradient(to right, rgba(69, 71, 90, 0.3) 12px, transparent 12px); background-size: 16px 100%; }
 progress { background-image: linear-gradient(to right, #cba6f7 12px, transparent 12px); background-size: 16px 100%; }
