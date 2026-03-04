@@ -98,7 +98,7 @@ int main(int argc, char *argv[]) {
     gtk_css_provider_load_from_data(provider,
         "window { background-color: #303446; border-radius: 24px; border: 2px solid #ca9ee6; } "
         "trough { background-color: #414559; border-radius: 16px; min-height: 32px; } "
-        "progress { background-color: #ca9ee6; border-radius: 16px; min-height: 32px; transition: all 0.05s cubic-bezier(0.16, 1, 0.3, 1); } ", -1, NULL);
+        "progress { background-color: #ca9ee6; border-radius: 16px; min-height: 32px; transition: all 0.02s ease-out; } ", -1, NULL);
     gtk_style_context_add_provider_for_screen(gdk_screen_get_default(), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
     g_io_add_watch(channel, G_IO_IN, on_fifo_data, osd);
     gtk_main();

@@ -93,7 +93,7 @@ int main(int argc, char *argv[]) {
     gtk_css_provider_load_from_data(provider,
         "window { background-color: rgba(24, 24, 37, 0.95); border-radius: 20px; border: 2px solid #f9e2af; } "
         "trough { background-image: linear-gradient(to right, rgba(69, 71, 90, 0.3) 12px, transparent 12px); background-size: 16px 100%; background-color: transparent; border-radius: 4px; min-height: 24px; } "
-        "progress { background-image: linear-gradient(to right, #f9e2af 12px, transparent 12px); background-size: 16px 100%; background-color: transparent; border-radius: 4px; min-height: 24px; transition: all 0.05s ease-out; } ", -1, NULL);
+        "progress { background-image: linear-gradient(to right, #f9e2af 12px, transparent 12px); background-size: 16px 100%; background-color: transparent; border-radius: 4px; min-height: 24px; transition: all 0.02s ease-out; } ", -1, NULL);
     gtk_style_context_add_provider_for_screen(gdk_screen_get_default(), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
     g_io_add_watch(channel, G_IO_IN, on_fifo_data, osd);

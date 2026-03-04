@@ -21,6 +21,7 @@ static gboolean hide_osd(gpointer data) {
     OSDData *osd = (OSDData *)data;
     gtk_widget_hide(osd->window);
     osd->timeout_id = 0;
+    osd->last_val = -1;
     return FALSE;
 }
 
