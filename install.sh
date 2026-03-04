@@ -49,6 +49,10 @@ case $t in
 esac
 echo -e "  \e[32m✔\e[0m Selected Theme Style: \e[1m$THEME\e[0m"
 
+echo -e "\n\e[36m[2.5/4] Optional: Power-Mod Utility\e[0m"
+read -p "  Install Power-Mod (Refresh Rate Toggler)? (y/N): " install_power
+[[ "$install_power" =~ ^[Yy]$ ]] && INSTALL_POWER=true || INSTALL_POWER=false
+
 # 3. Cleanup & Compilation
 echo -e "\n\e[33m[3/4] Step: Compilation & Binary Deployment\e[0m"
 
@@ -65,9 +69,11 @@ echo "  -> Compiling Brightness OSD ($THEME)..."
 gcc "$ROOT_DIR/$B" -o "$DEST/brightness-osd" $(pkg-config --cflags --libs gtk+-3.0 gtk-layer-shell-0)
 if [ $? -eq 0 ]; then echo -e "     \e[32m✔\e[0m Binary installed to $DEST/brightness-osd"; else exit 1; fi
 
-echo "  -> Compiling Power-Mod Utility..."
-gcc "$ROOT_DIR/src/power/power-mod.c" -o "$DEST/power-mod" $(pkg-config --cflags --libs gtk+-3.0 gtk-layer-shell-0)
-if [ $? -eq 0 ]; then echo -e "     \e[32m✔\e[0m Binary installed to $DEST/power-mod"; else exit 1; fi
+if [ "$INSTALL_POWER" = true ]; then
+    echo "  -> Compiling Power-Mod Utility..."
+    gcc "$ROOT_DIR/src/power/power-mod.c" -o "$DEST/power-mod" $(pkg-config --cflags --libs gtk+-3.0 gtk-layer-shell-0)
+    if [ $? -eq 0 ]; then echo -e "     \e[32m✔\e[0m Binary installed to $DEST/power-mod"; else exit 1; fi
+fi
 
 # 4. Config & Activation
 echo -e "\n\e[33m[4/4] Step: System Integration\e[0m"
@@ -75,15 +81,15 @@ echo -e "\n\e[33m[4/4] Step: System Integration\e[0m"
 if [ -f "$CONF" ]; then
     echo "  -> Checking Hyprland configuration at $CONF..."
     if grep -q "volume-osd" "$CONF"; then
-        echo "     \e[32m✔\e[0m volume-osd autostart already present."
+        echo -e "     \e[32m✔\e[0m volume-osd autostart already present."
     else
-        echo "     + Adding 'exec-once = volume-osd' to config."
+        echo -e "     + Adding 'exec-once = volume-osd' to config."
         echo "exec-once = volume-osd" >> "$CONF"
     fi
     if grep -q "brightness-osd" "$CONF"; then
-        echo "     \e[32m✔\e[0m brightness-osd autostart already present."
+        echo -e "     \e[32m✔\e[0m brightness-osd autostart already present."
     else
-        echo "     + Adding 'exec-once = brightness-osd' to config."
+        echo -e "     + Adding 'exec-once = brightness-osd' to config."
         echo "exec-once = brightness-osd" >> "$CONF"
     fi
 else

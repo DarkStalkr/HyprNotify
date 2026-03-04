@@ -15,16 +15,21 @@ typedef struct {
     GtkWidget *progress;
     GtkWidget *icon_label;
     guint timeout_id;
+    int last_val;
 } OSDData;
 
 static gboolean hide_osd(gpointer data) {
     OSDData *osd = (OSDData *)data;
     gtk_widget_hide(osd->window);
     osd->timeout_id = 0;
+    osd->last_val = -1;
     return FALSE;
 }
 
 static void update_osd(OSDData *osd, int val) {
+    if (val == osd->last_val && gtk_widget_get_visible(osd->window)) return;
+    osd->last_val = val;
+
     const char *color = "#eed49f"; // Mocha Yellow
     char icon_markup[128];
     snprintf(icon_markup, sizeof(icon_markup), "<span font='28' color='%s'>%s</span>", color, ICON_BRIGHT);
@@ -33,7 +38,10 @@ static void update_osd(OSDData *osd, int val) {
 
     if (osd->timeout_id > 0) g_source_remove(osd->timeout_id);
     osd->timeout_id = g_timeout_add(1500, hide_osd, osd);
-    gtk_widget_show_all(osd->window);
+    
+    if (!gtk_widget_get_visible(osd->window)) {
+        gtk_widget_show_all(osd->window);
+    }
 }
 
 static gboolean on_fifo_data(GIOChannel *source, GIOCondition condition, gpointer data) {
@@ -66,6 +74,7 @@ int main(int argc, char *argv[]) {
     g_io_channel_set_flags(channel, G_IO_FLAG_NONBLOCK, NULL);
     
     OSDData *osd = g_new0(OSDData, 1);
+    osd->last_val = -1;
     osd->window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     
     gtk_layer_init_for_window(GTK_WINDOW(osd->window));
@@ -73,6 +82,7 @@ int main(int argc, char *argv[]) {
     gtk_layer_set_namespace(GTK_WINDOW(osd->window), "brightness-osd");
     gtk_layer_set_anchor(GTK_WINDOW(osd->window), GTK_LAYER_SHELL_EDGE_BOTTOM, TRUE);
     gtk_layer_set_margin(GTK_WINDOW(osd->window), GTK_LAYER_SHELL_EDGE_BOTTOM, 80);
+    gtk_layer_set_keyboard_interactivity(GTK_WINDOW(osd->window), FALSE);
 
     GtkWidget *box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 15);
     gtk_container_set_border_width(GTK_CONTAINER(box), 20);
@@ -91,7 +101,7 @@ int main(int argc, char *argv[]) {
     gtk_css_provider_load_from_data(provider,
         "window { background-color: #24273a; border-radius: 24px; border: 2px solid #eed49f; } "
         "trough { background-color: #363a4f; border-radius: 16px; min-height: 32px; } "
-        "progress { background-color: #eed49f; border-radius: 16px; min-height: 32px; } ", -1, NULL);
+        "progress { background-color: #eed49f; border-radius: 16px; min-height: 32px; transition: all 0.05s ease-out; } ", -1, NULL);
     gtk_style_context_add_provider_for_screen(gdk_screen_get_default(), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
     g_io_add_watch(channel, G_IO_IN, on_fifo_data, osd);

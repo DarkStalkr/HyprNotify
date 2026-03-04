@@ -81,9 +81,11 @@ int main(int argc, char *argv[]) {
     gtk_container_add(GTK_CONTAINER(osd->window), box);
 
     osd->icon_label = gtk_label_new(NULL);
+    gtk_widget_set_valign(osd->icon_label, GTK_ALIGN_CENTER);
     gtk_box_pack_start(GTK_BOX(box), osd->icon_label, FALSE, FALSE, 0);
 
     osd->progress = gtk_progress_bar_new();
+    gtk_widget_set_valign(osd->progress, GTK_ALIGN_CENTER);
     gtk_widget_set_size_request(osd->progress, 250, 24);
     gtk_box_pack_start(GTK_BOX(box), osd->progress, TRUE, TRUE, 0);
 
