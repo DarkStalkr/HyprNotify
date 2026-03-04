@@ -69,14 +69,8 @@ echo "  -> Compiling Brightness OSD ($THEME)..."
 gcc "$ROOT_DIR/$B" -o "$DEST/brightness-osd" $(pkg-config --cflags --libs gtk+-3.0 gtk-layer-shell-0)
 if [ $? -eq 0 ]; then echo -e "     \e[32m✔\e[0m Binary installed to $DEST/brightness-osd"; else exit 1; fi
 
-if [ "$INSTALL_POWER" = true ]; then
-    echo "  -> Compiling Power-Mod Utility..."
-    gcc "$ROOT_DIR/src/power/power-mod.c" -o "$DEST/power-mod" $(pkg-config --cflags --libs gtk+-3.0 gtk-layer-shell-0)
-    if [ $? -eq 0 ]; then echo -e "     \e[32m✔\e[0m Binary installed to $DEST/power-mod"; else exit 1; fi
-fi
-
 # 4. Config & Activation
-echo -e "\n\e[33m[4/4] Step: System Integration\e[0m"
+echo -e "\n\e[33m[4/5] Step: System Integration\e[0m"
 
 if [ -f "$CONF" ]; then
     echo "  -> Checking Hyprland configuration at $CONF..."
@@ -99,6 +93,17 @@ fi
 echo "  -> Launching new OSD daemons in background..."
 "$DEST/volume-osd" &
 "$DEST/brightness-osd" &
+
+if [ "$INSTALL_POWER" = true ]; then
+    echo -e "\n\e[33m[5/5] Final Step: Power-Mod Utility\e[0m"
+    echo "  -> Compiling Power-Mod Utility..."
+    gcc "$ROOT_DIR/src/power/power-mod.c" -o "$DEST/power-mod" $(pkg-config --cflags --libs gtk+-3.0 gtk-layer-shell-0)
+    if [ $? -eq 0 ]; then 
+        echo -e "     \e[32m✔\e[0m Binary installed to $DEST/power-mod"
+    else 
+        echo -e "     \e[31m✘\e[0m Compilation failed for Power-Mod."
+    fi
+fi
 
 echo -e "\n\e[1;32mInstallation Successful!\e[0m"
 echo "The $THEME theme is now active. You can now use your volume and brightness keys."

@@ -15,6 +15,7 @@ typedef struct {
     GtkWidget *progress;
     GtkWidget *icon_label;
     guint timeout_id;
+    int last_val;
 } OSDData;
 
 static gboolean hide_osd(gpointer data) {
