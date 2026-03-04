@@ -1,7 +1,7 @@
 # HyprNotify Suite
 
 
-<div align="right">
+<div align="center">
   <img src="assets/showcase_gifs/classic_volume.gif" width="45%" alt="Volume OSD Demo">
   <img src="assets/showcase_gifs/classic_brightness.gif" width="45%" alt="Brightness OSD Demo">
 </div>
