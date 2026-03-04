@@ -9,7 +9,7 @@ BIN_DIR="$ROOT_DIR/bin"
 echo -e "\e[1;34m--- HyprNotify Suite: Professional Installer ---\e[0m"
 
 # 1. Dependency Check
-echo -e "\e[33m[1/4] Step: Verifying system prerequisites...\e[0m"
+echo -e "\e[33m[1/5] Step: Verifying system prerequisites...\e[0m"
 for dep in gtk+-3.0 gtk-layer-shell-0; do
     if pkg-config --exists "$dep"; then
         echo -e "  \e[32m✔\e[0m Found dependency: $dep"
@@ -28,7 +28,7 @@ echo "  -> Ensuring directory exists: $BIN_DIR"
 mkdir -p "$BIN_DIR"
 
 # 2. Selection
-echo -e "\n\e[36m[2/4] Step: Theme Selection\e[0m"
+echo -e "\n\e[36m[2/5] Step: Theme Selection\e[0m"
 echo "  0) macOS (Segmented / Default)"
 echo "  1) Mocha (Solid)"
 echo "  2) Macchiato"
@@ -49,12 +49,12 @@ case $t in
 esac
 echo -e "  \e[32m✔\e[0m Selected Theme Style: \e[1m$THEME\e[0m"
 
-echo -e "\n\e[36m[2.5/4] Optional: Power-Mod Utility\e[0m"
+echo -e "\n\e[36m[2.5/5] Optional: Power-Mod Utility\e[0m"
 read -p "  Install Power-Mod (Refresh Rate Toggler)? (y/N): " install_power
 [[ "$install_power" =~ ^[Yy]$ ]] && INSTALL_POWER=true || INSTALL_POWER=false
 
 # 3. Cleanup & Compilation
-echo -e "\n\e[33m[3/4] Step: Compilation & Binary Deployment\e[0m"
+echo -e "\n\e[33m[3/5] Step: Compilation & Binary Deployment\e[0m"
 
 echo "  -> Stopping any running OSD instances..."
 pkill -x volume-osd 2>/dev/null
