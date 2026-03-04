@@ -19,7 +19,7 @@ A collection of high-performance, minimalist C utilities for Hyprland/Wayland, d
 
 ---
 
-## 🎨 Theming & Customization
+## Theming & Customization
 
 The HyprNotify suite is designed to be easily "riceable." Choose from several pre-configured themes or create your own with CSS.
 
@@ -78,7 +78,7 @@ The HyprNotify suite is designed to be easily "riceable." Choose from several pr
 </details>
 
 <details>
-<summary><b>🌃 Tokyo Night</b></summary>
+<summary><b>🌠 Tokyo Night</b></summary>
 <br>
 <div align="center">
   <img src="assets/showcase_gifs/tokyonight_volume.gif" width="45%" alt="Tokyo Night Volume">&nbsp;&nbsp;
