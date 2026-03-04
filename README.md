@@ -11,7 +11,7 @@ A collection of high-performance, minimalist C utilities for Hyprland/Wayland, d
 
 ---
 
-## 🚀 Features
+## Features
 - **Zero-Latency**: Daemons use persistent FIFOs to eliminate the overhead of spawning new processes on every keypress.
 - **Ultra-Smooth Animations**: Optimized logic with 0.05s CSS transitions and throttled UI updates for a "clean" and responsive feel, even under high-frequency input (e.g., holding a key).
 - **Low Resource Usage**: Idle at 0.0% CPU; optimized read loops and redundant call avoidance ensure minimal impact during use.
@@ -98,9 +98,9 @@ progress { background-image: linear-gradient(to right, #cba6f7 12px, transparent
 
 ---
 
-## 🛠️ Installation
+## Installation
 
-### 1. Install Prerequisites
+### 1. Prerequisites
 
 **Arch Linux:**
 ```bash
@@ -120,7 +120,7 @@ chmod +x install.sh
 ./install.sh
 ```
 
-## ⌨️ Keybindings (Hyprland)
+## Keybindings (Hyprland)
 Add these to your `hyprland.conf`:
 ```bash
 # Volume control with FIFO feedback
@@ -135,7 +135,7 @@ binde = , XF86MonBrightnessDown, exec, brightnessctl s 5%- && brightnessctl g | 
 
 ---
 
-## 📊 Performance Benchmark
+## Performance Benchmark
 | Utility | Idle CPU | Active CPU (Stress) | RAM Usage |
 | :--- | :--- | :--- | :--- |
 | **Volume OSD** | 0.0% | ~4.9% | ~39MB |
