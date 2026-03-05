@@ -1,4 +1,4 @@
-#  ☀️ HyprNotify Suite
+# HyprNotify Suite
 
 A collection of high-performance, minimalist C utilities for Hyprland/Wayland, designed for seamless system feedback and power management.
 
